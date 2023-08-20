@@ -1,9 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
+import Sidebar from './Sidebar';
+import Main from './main';
 
 function App() {
   return (
-    <div className="App"> notes</div>
+    <div className="App"> 
+    <Sidebar/>
+    <Main/>
+    </div>
   );
 }
 
