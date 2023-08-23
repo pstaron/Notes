@@ -10,7 +10,6 @@ function App() {
   );
   const [activeNote, setActiveNote] = useState(false);
 
-  
   const onDeleteNote = (noteId) => {
     setNotes(notes.filter(({ id }) => id !== noteId));
   };
