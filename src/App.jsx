@@ -19,6 +19,18 @@ function App() {
     return notes.find(({ id }) => id === activeNote);
   };
 
+  const onUpdateNote = (updatedNote) => {
+    const updatedNotesArr = notes.map((note) => {
+      if (note.id === updatedNote.id) {
+        return updatedNote;
+      }
+
+      return note;
+    });
+
+    setNotes(updatedNotesArr);
+  };
+
   return (
     <div className="App">
       <Sidebar
