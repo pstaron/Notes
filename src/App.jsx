@@ -1,47 +1,42 @@
-import { useEffect, useState } from "react";
-import uuid from "react-uuid";
-import "./App.css";
-import Main from "./main/Main";
-import Sidebar from "./Sidebar/Sidebar";
+import ReactMarkdown from "react-markdown";
 
-function App() {
-  const [notes, setNotes] = useState(
-    localStorage.notes ? JSON.parse(localStorage.notes) : []
-  );
-  const [activeNote, setActiveNote] = useState(false);
-
-  const onDeleteNote = (noteId) => {
-    setNotes(notes.filter(({ id }) => id !== noteId));
-  };
-
-  const getActiveNote = () => {
-    return notes.find(({ id }) => id === activeNote);
-  };
-
-  const onUpdateNote = (updatedNote) => {
-    const updatedNotesArr = notes.map((note) => {
-      if (note.id === updatedNote.id) {
-        return updatedNote;
-      }
-
-      return note;
+const Main = ({ activeNote, onUpdateNote }) => {
+  const onEditField = (field, value) => {
+    onUpdateNote({
+      ...activeNote,
+      [field]: value,
+      lastModified: Date.now(),
     });
-
-    setNotes(updatedNotesArr);
   };
+
+  if (!activeNote) return <div className="no-active-note">No Active Note</div>;
 
   return (
-    <div className="App">
-      <Sidebar
-        notes={notes}
-        onAddNote={onAddNote}
-        onDeleteNote={onDeleteNote}
-        activeNote={activeNote}
-        setActiveNote={setActiveNote}
-      />
-      <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote} />
+    <div className="app-main">
+      <div className="app-main-note-edit">
+        <input
+          type="text"
+          id="title"
+          placeholder="Note Title"
+          value={activeNote.title}
+          onChange={(e) => onEditField("title", e.target.value)}
+          autoFocus
+        />
+        <textarea
+          id="body"
+          placeholder="Write your note here..."
+          value={activeNote.body}
+          onChange={(e) => onEditField("body", e.target.value)}
+        />
+      </div>
+      <div className="app-main-note-preview">
+        <h1 className="preview-title">{activeNote.title}</h1>
+        <ReactMarkdown className="markdown-preview">
+          {activeNote.body}
+        </ReactMarkdown>
+      </div>
     </div>
   );
-}
+};
 
-export default App;
+export default Main;
